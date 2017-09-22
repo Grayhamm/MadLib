@@ -1,0 +1,5 @@
+﻿G:\Programming\MSVC\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(387,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  Project1.cpp
+h:\programming\projects\project1\project1\project1.cpp(28): warning C4018: '<': signed/unsigned mismatch
+  Project1.vcxproj -> H:\programming\Projects\Project1\Debug\MadLib.exe
+  Project1.vcxproj -> H:\programming\Projects\Project1\Debug\MadLib.pdb (Partial PDB)
