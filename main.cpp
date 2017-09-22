@@ -52,23 +52,25 @@ std::vector<MadLibChunk> parse(const std::string& str)
 
 int main()
 {
-	std::string str = "\
+	std::string story = "\
 I spent last summer on my grandfather's {Adjective} farm.  He raises {noun/s} for local food {noun/s}.  He also grows \
 corn on the {noun}, {adjective} lettuce, and lima {noun/s}.  My favorite place to {verb} on the farm is the {adjective} house where \
 grandfather keeps his {noun/s}.  But when I visit in November, there are no {noun/s}!  They are all gone!  I anxiously await at the table \
 that Thanksgiving.  I am relived when Grandma brings out the {noun} for Thanksgiving dinner.";
 
-	auto entries = parse(str);	
+	auto chunks = parse(story);	
 
-	for (auto& e : entries)
+	for (auto& e : chunks)
 	{
 		e.GetUserInput();
 	}
 
-	for (const auto& e : entries)
+	for (const auto& e : chunks)
 	{
 		e.Display();
 	}
+
+	std::cin.get();
 	
     return 0;
 }
