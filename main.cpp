@@ -5,8 +5,7 @@
 struct MadLibChunk
 {	
 	std::string before;
-	std::string prompt;
-	std::string after;	
+	std::string prompt;	
 	std::string userInput;
 
 	void GetUserInput()
@@ -17,61 +16,77 @@ struct MadLibChunk
 
 	void Display() const
 	{
-		std::cout << before << userInput << after;
+		std::cout << before << userInput;
 	}
 };
 
-std::vector<MadLibChunk> parse(const std::string& str)
+class MadLib
 {
-	std::vector<MadLibChunk> chunklist;
-	int iAt = 0;
-	while (iAt < str.length() && iAt >= 0)
-	{
-		MadLibChunk chunk;
+public:
 
-		int next = str.find('{', iAt);		
-		chunk.before = str.substr(iAt, next-iAt);
+	MadLib(const std::string& str)
+	{		
+		int iAt = 0;
+		while (iAt < str.length() && iAt >= 0)
+		{
+			MadLibChunk chunk;
 
-		if (next == -1)
-		{			
-			break;
+			int next = str.find('{', iAt);
+			chunk.before = str.substr(iAt, next - iAt);
+
+			if (next == -1)
+			{
+				break;
+			}
+
+			int close = str.find('}', next);
+			chunk.prompt = str.substr(next + 1, close - next - 1) + ": ";
+
+			ChunkList.push_back(chunk);
+			iAt = close + 1;
 		}
 
-		int close = str.find('}', next);
-		chunk.prompt = str.substr(next + 1, close - next-1) + ": ";	
-
-		chunklist.push_back(chunk);
-		iAt = close + 1;
+		FinalText = str.substr(iAt);
 	}
 
-	chunklist.back().after = str.substr(iAt);
+	void PromptUser()
+	{
+		for (auto& e : ChunkList)
+		{
+			e.GetUserInput();
+		}
+	}
 
-	return chunklist;
-}
+	void DisplayStory()
+	{
+		for (const auto& e : ChunkList)
+		{
+			e.Display();
+		}
+
+		std::cout << FinalText << "\n";
+	}
+
+private:
+	std::vector<MadLibChunk> ChunkList;
+	std::string FinalText;
+};
+
 
 
 int main()
 {
 	std::string story = "\
-I spent last summer on my grandfather's {Adjective} farm.  He raises {noun/s} for local food {noun/s}.  He also grows \
+I spent last summer on my grandfather's {adjective} farm.  He raises {noun/s} for local food {noun/s}.  He also grows \
 corn on the {noun}, {adjective} lettuce, and lima {noun/s}.  My favorite place to {verb} on the farm is the {adjective} house where \
 grandfather keeps his {noun/s}.  But when I visit in November, there are no {noun/s}!  They are all gone!  I anxiously await at the table \
 that Thanksgiving.  I am relived when Grandma brings out the {noun} for Thanksgiving dinner.";
 
-	auto chunks = parse(story);	
+	MadLib m(story);
+	m.PromptUser();
+	m.DisplayStory();
 
-	for (auto& e : chunks)
-	{
-		e.GetUserInput();
-	}
-
-	for (const auto& e : chunks)
-	{
-		e.Display();
-	}
-
-	std::cin.get();
-	
+	system("pause");
     return 0;
 }
 
